@@ -8,7 +8,6 @@ const Input = ({
   placeholder,
   readonly,
   name,
-  inputDOM,
 }) => {
   return (
     <input
@@ -17,9 +16,8 @@ const Input = ({
       placeholder={placeholder ? placeholder : null}
       value={value}
       onInput={onChange}
-      readOnly={readonly}
+      readOnly={readonly ? readonly : null}
       name={name}
-      ref={inputDOM}
     />
   );
 };

@@ -3,8 +3,10 @@ import CheckIcon from "../assets/icon-check.svg";
 import crossIcon from "../assets/icon-cross.svg";
 import Input from "../components/Input";
 
-const TodoList = ({ todo, setTodoList, isDark }) => {
+const TodoList = ({ todo, setTodoList, isDark, width }) => {
   const [hoverClose, setHoverClose] = useState("invisible");
+
+  // check todo when it's completed
   const handleTodoList = () => {
     setTodoList((prevTodos) => {
       return prevTodos.map((todoItem) =>
@@ -13,6 +15,7 @@ const TodoList = ({ todo, setTodoList, isDark }) => {
     });
   };
 
+  // delete single todo
   const handleDeleteTodo = () => {
     return setTodoList((prevState) =>
       prevState.filter((todos) => todos.id !== todo.id),
@@ -33,7 +36,7 @@ const TodoList = ({ todo, setTodoList, isDark }) => {
             {todo.isComplete ? (
               <div className="flex h-full w-full items-center justify-center rounded-full bg-gradient-to-br from-[#7ab1f5] to-[#9f71eb]">
                 <img
-                  className="h-3 w-3 select-none"
+                  className={`h-3 w-3 select-none ${width <= 640 && "h-2 w-2"}`}
                   src={CheckIcon}
                   alt="check icon"
                 />

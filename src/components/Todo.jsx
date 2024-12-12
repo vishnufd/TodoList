@@ -9,11 +9,12 @@ import TodoList from "../components/TodoList";
 import Input from "../components/Input";
 
 const Todo = () => {
-  const [width, setWidth] = useState(window.innerWidth);
+  // theme state
   const [isDark, setDark] = useState(
     JSON.parse(localStorage.getItem("isDark")),
   );
-  const [filteredData, setFilterData] = useState("All");
+
+  // add todos into useState
   const [todo, setTodoList] = useState([
     {
       id: crypto.randomUUID(),
@@ -37,6 +38,33 @@ const Todo = () => {
     },
   ]);
 
+  // updating data to existing todo
+  const handleSubmitTodo = () => {
+    if (todoList.todo === "") return;
+    setTodoList((prevState) => [
+      ...prevState,
+      { ...todoList, isComplete: false, id: crypto.randomUUID() },
+    ]);
+  };
+
+  const [todoList, setTodo] = useState({
+    todo: "",
+    isComplete: null,
+    id: null,
+  });
+
+  // getting data from input field
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setTodo((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  // filter methods
+  const [filteredData, setFilterData] = useState("All");
+
   const filteredTodos = todo.filter((todo) => {
     if (filteredData === "All") return true;
     if (filteredData === "Active") return !todo.isComplete;
@@ -52,42 +80,20 @@ const Todo = () => {
     });
   };
 
-  const [todoList, setTodo] = useState({
-    todo: "",
-    isComplete: null,
-  });
+  // number of remaining todo items that is not completed
+  const uncompletedTodos = todo.filter(
+    (todo) => todo?.isComplete === false,
+  ).length;
 
-  const handleSubmitTodo = () => {
-    if (todoList.todo === "") return;
-    setTodoList((prevState) => [
-      ...prevState,
-      { ...todoList, isComplete: false },
-    ]);
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setTodo((prevState) => ({
-      ...prevState,
-      [name]: value,
-      id: crypto.randomUUID(),
-    }));
-  };
+  // setting width
+  const [width, setWidth] = useState(window.innerWidth);
 
   useEffect(() => {
     const handleWidth = () => {
       return setWidth(window.innerWidth);
     };
     window.addEventListener("resize", handleWidth);
-
-    return () => {
-      window.removeEventListener("resize", handleWidth);
-    };
   }, []);
-
-  const uncompletedTodos = todo.filter(
-    (todo) => todo?.isComplete === false,
-  ).length;
 
   return (
     <main
@@ -157,6 +163,7 @@ const Todo = () => {
                 todo={todoList}
                 setTodoList={setTodoList}
                 isDark={isDark}
+                width={width}
               />
             );
           })}
