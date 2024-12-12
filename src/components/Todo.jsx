@@ -14,7 +14,7 @@ const Todo = () => {
     JSON.parse(localStorage.getItem("isDark")),
   );
 
-  // add todos into useState
+  // main todos useState
   const [todo, setTodoList] = useState([
     {
       id: crypto.randomUUID(),
